@@ -1,6 +1,0 @@
-C:/Users/ownem/source/repos/Slimes/cmake-build-debug/CMakeFiles/Client.dir
-C:/Users/ownem/source/repos/Slimes/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/ownem/source/repos/Slimes/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-C:/Users/ownem/source/repos/Slimes/cmake-build-debug/deps/Saffron/CMakeFiles/Saffron.dir
-C:/Users/ownem/source/repos/Slimes/cmake-build-debug/deps/Saffron/CMakeFiles/edit_cache.dir
-C:/Users/ownem/source/repos/Slimes/cmake-build-debug/deps/Saffron/CMakeFiles/rebuild_cache.dir
