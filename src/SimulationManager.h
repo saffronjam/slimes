@@ -57,15 +57,15 @@ private:
 	void UpdatePaletteTransition();
 	void UpdatePaletteData();
 
-	Function<sf::Vector2f(int)> GetPositionGenerator(ShapeType shapeType);
-	Function<float(int)> GetAngleGenerator(AngleType angleType);
+	auto PositionGenerator(ShapeType shapeType) -> Function<sf::Vector2f(int)>;
+	auto AngleGenerator(AngleType angleType) -> Function<float(int)>;
 
 	void SetShape(const Function<sf::Vector2f(int)>& generator);
 	void SetAngles(const Function<float(int)>& generator);
 	void SetPalette(PaletteType desired);
 	void SetQuality(QualityType quality);
-	void SetTexSize(Uint32 width, Uint32 height);
-	void SetAgentDimensionSize(Uint32 size);
+	void ResizeTexture(Uint32 width, Uint32 height);
+	void ResizeAgentDimension(Uint32 size);
 
 	void Reset(ShapeType shapeType, AngleType angleType);
 	void Transition(ShapeType shapeTypeTo, AngleType angleTypeTo);
@@ -73,24 +73,24 @@ private:
 	void RunDrawFrame();
 
 	// Fix for problem with using OpenGL freely alongside SFML
-	static void SetUniform(Uint32 id, const String &name, const sf::Vector2<double> &value);
-	static void SetUniform(Uint32 id, const String &name, float value);
-	static void SetUniform(Uint32 id, const String &name, double value);
-	static void SetUniform(Uint32 id, const String &name, int value);
+	static void SetUniform(Uint32 id, const String& name, const sf::Vector2<double>& value);
+	static void SetUniform(Uint32 id, const String& name, float value);
+	static void SetUniform(Uint32 id, const String& name, double value);
+	static void SetUniform(Uint32 id, const String& name, int value);
 
 private:
 	static constexpr Uint32 _paletteWidth = 2048;
 
 	StateType _stateType = StateType::Paused;
-	
+
 	Uint32 _agentDim;
 	Uint32 _texWidth;
 	Uint32 _texHeight;
 
-	ArrayList<Agent> _agentBuffer;
+	List<Agent> _agentBuffer;
 
 	sf::Image _simulationImage;
-	
+
 	sf::Texture _dataTexture;
 	sf::RenderTexture _targetTexture;
 
@@ -121,10 +121,10 @@ private:
 	float _evaporateSpeed = 6.5f;
 	float _colorScale = 5.0f;
 
-	ArrayList<const char*> _shapeTypeNames;
-	ArrayList<const char*> _angleTypeNames;
-	ArrayList<const char*> _paletteTypeNames;
-	ArrayList<const char*> _qualityTypeNames;
+	List<const char*> _shapeTypeNames;
+	List<const char*> _angleTypeNames;
+	List<const char*> _paletteTypeNames;
+	List<const char*> _qualityTypeNames;
 	int _shapeTypeIndex = static_cast<int>(_shapeType);
 	int _angleTypeIndex = static_cast<int>(_angleType);
 	int _paletteTypeIndex = static_cast<int>(_desiredPalette);
