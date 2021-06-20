@@ -7,6 +7,24 @@
     <img src="https://img.shields.io/badge/gcc-8.0+-ff69b4.svg" alt="gcc-8.0+">
 </p>
 
+## Preview
+
+<p align="center">  
+  <img src="https://github.com/saffronjam/Slimes/blob/master/preview0.png" width="75%">
+  <img src="https://github.com/saffronjam/Slimes/blob/master/preview1.png" width="75%">
+  <img src="https://github.com/saffronjam/Slimes/blob/master/previewGif0.gif" width="75%">
+  <img src="https://github.com/saffronjam/Slimes/blob/master/previewGif1.gif" width="75%">
+</p>
+  
+## Setting up
+<p align="center">
+    <img src="https://github.com/saffronjam/SaffronEngine2D/blob/master/startCMakeProjectCLion.png" width="30%">
+    <img width="2%">
+    <img src="https://github.com/saffronjam/SaffronEngine2D/blob/master/startCMakeProjectVS.png" width="30%">
+    <img width="2%">
+    <img src="https://github.com/saffronjam/SaffronEngine2D/blob/master/startCMakeProjectVSCode.png" width="30%">
+</p>
+
 ## Setting up
 <p align="center">
     <img src="https://github.com/saffronjam/SaffronEngine2D/blob/master/startCMakeProjectCLion.png" width="30%">
