@@ -54,12 +54,10 @@ void BaseLayer::OnUpdate()
 
 void BaseLayer::OnGuiRender()
 {
-	if (_viewSystem)
-	{
-		_camera.OnGuiRender();
-		_terminal.OnGuiRender();
-		App::Instance().OnGuiRender();
-	}
+	Gui::Instance().OnGuiRender();
+	_camera.OnGuiRender();
+	_terminal.OnGuiRender();
+	App::Instance().OnGuiRender();
 	_scene.OnGuiRender();
 }
 

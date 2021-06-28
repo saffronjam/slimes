@@ -34,9 +34,6 @@ protected:
 	Terminal _terminal;
 	DockSpace _dockSpace;
 
-	bool _viewSystem = true;
-	bool _viewDemo = true;
-
 private:
 	bool _wantResize = false;
 	sf::Vector2f _resizeTo = VecUtils::Null<>();

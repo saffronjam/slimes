@@ -314,19 +314,19 @@ void SimulationManager::SetQuality(QualityType quality)
 	{
 	case QualityType::Low:
 	{
-		ResizeTexture(700, 400);
+		ResizeTexture(650, 480);
 		ResizeAgentDimension(128);
 		break;
 	}
 	case QualityType::Medium:
 	{
-		ResizeTexture(1400, 800);
+		ResizeTexture(1320, 900);
 		ResizeAgentDimension(512);
 		break;
 	}
 	case QualityType::High:
 	{
-		ResizeTexture(2100, 1200);
+		ResizeTexture(2000, 1400);
 		ResizeAgentDimension(1024);
 		break;
 	}
@@ -338,7 +338,7 @@ void SimulationManager::SetQuality(QualityType quality)
 	Transition(_shapeType, _angleType);
 }
 
-void SimulationManager::ResizeTexture(Uint32 width, Uint32 height)
+void SimulationManager::ResizeTexture(uint width, uint height)
 {
 	if (_texWidth == width && _texHeight == height)
 	{
@@ -358,7 +358,7 @@ void SimulationManager::ResizeTexture(Uint32 width, Uint32 height)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void SimulationManager::ResizeAgentDimension(Uint32 size)
+void SimulationManager::ResizeAgentDimension(uint size)
 {
 	_agentBuffer.resize(size * size);
 	_agentDim = size;
@@ -422,7 +422,7 @@ void SimulationManager::RunDrawFrame()
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 }
 
-void SimulationManager::SetUniform(Uint32 id, const String& name, const sf::Vector2<double>& value)
+void SimulationManager::SetUniform(uint id, const String& name, const sf::Vector2<double>& value)
 {
 	glUseProgram(id);
 
@@ -433,7 +433,7 @@ void SimulationManager::SetUniform(Uint32 id, const String& name, const sf::Vect
 	glUseProgram(0);
 }
 
-void SimulationManager::SetUniform(Uint32 id, const String& name, float value)
+void SimulationManager::SetUniform(uint id, const String& name, float value)
 {
 	glUseProgram(id);
 
@@ -444,7 +444,7 @@ void SimulationManager::SetUniform(Uint32 id, const String& name, float value)
 	glUseProgram(0);
 }
 
-void SimulationManager::SetUniform(Uint32 id, const String& name, double value)
+void SimulationManager::SetUniform(uint id, const String& name, double value)
 {
 	glUseProgram(id);
 
@@ -455,7 +455,7 @@ void SimulationManager::SetUniform(Uint32 id, const String& name, double value)
 	glUseProgram(0);
 }
 
-void SimulationManager::SetUniform(Uint32 id, const String& name, int value)
+void SimulationManager::SetUniform(uint id, const String& name, int value)
 {
 	glUseProgram(id);
 

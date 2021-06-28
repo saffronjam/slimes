@@ -3,9 +3,9 @@
 
 namespace Se
 {
-Unique<App> CreateApplication()
+auto CreateApplication() -> Unique<App>
 {
-	return CreateUnique<ProjectApp>(AppProperties{ "Slimes", 1700, 720 });
+	return CreateUnique<ProjectApp>(AppProperties::CreateFullscreen("Slimes"));
 }
 
 ProjectApp::ProjectApp(const AppProperties& properties) :
@@ -21,5 +21,6 @@ void ProjectApp::OnInit()
 
 void ProjectApp::OnUpdate()
 {
+	App::OnUpdate();
 }
 }

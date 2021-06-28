@@ -64,8 +64,8 @@ private:
 	void SetAngles(const Function<float(int)>& generator);
 	void SetPalette(PaletteType desired);
 	void SetQuality(QualityType quality);
-	void ResizeTexture(Uint32 width, Uint32 height);
-	void ResizeAgentDimension(Uint32 size);
+	void ResizeTexture(uint width, uint height);
+	void ResizeAgentDimension(uint size);
 
 	void Reset(ShapeType shapeType, AngleType angleType);
 	void Transition(ShapeType shapeTypeTo, AngleType angleTypeTo);
@@ -73,19 +73,19 @@ private:
 	void RunDrawFrame();
 
 	// Fix for problem with using OpenGL freely alongside SFML
-	static void SetUniform(Uint32 id, const String& name, const sf::Vector2<double>& value);
-	static void SetUniform(Uint32 id, const String& name, float value);
-	static void SetUniform(Uint32 id, const String& name, double value);
-	static void SetUniform(Uint32 id, const String& name, int value);
+	static void SetUniform(uint id, const String& name, const sf::Vector2<double>& value);
+	static void SetUniform(uint id, const String& name, float value);
+	static void SetUniform(uint id, const String& name, double value);
+	static void SetUniform(uint id, const String& name, int value);
 
 private:
-	static constexpr Uint32 _paletteWidth = 2048;
+	static constexpr uint _paletteWidth = 2048;
 
 	StateType _stateType = StateType::Paused;
 
-	Uint32 _agentDim;
-	Uint32 _texWidth;
-	Uint32 _texHeight;
+	uint _agentDim;
+	uint _texWidth;
+	uint _texHeight;
 
 	List<Agent> _agentBuffer;
 
@@ -97,7 +97,7 @@ private:
 	Shared<ComputeShader> _drawCS;
 	Shared<sf::Shader> _painterPS;
 	Shared<sf::Shader> _blendEvapPaintPS;
-	Uint32 _ssbo;
+	uint _ssbo;
 
 	ShapeType _shapeType = ShapeType::Circle;
 	AngleType _angleType = AngleType::CenterIn;
