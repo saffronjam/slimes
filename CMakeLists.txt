@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1.0)
-project(Algorithms VERSION 0.1.0)
+project(Slimes VERSION 0.1.0)
 
 ### DIRECTORIES ###
 set(BuildDir "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}")
@@ -88,6 +88,7 @@ if (Platform STREQUAL windows)
 endif ()
 
 file(COPY ${SaffronResourceDir} DESTINATION ${OutputDir})
+
 file(COPY ${ResourceDir} DESTINATION ${OutputDir})
 find_package(Threads REQUIRED)
 
@@ -104,8 +105,6 @@ target_include_directories(Client PRIVATE
         ${SaffronIncludeDirs}
         ${SaffronIncludeDirsExt}
         )
-
-message(hello ${SaffronIncludeDirsExt})
 
 ### LIBRARIES ###
 target_link_libraries(Client PRIVATE Saffron)
