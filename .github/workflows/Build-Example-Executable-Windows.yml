@@ -43,6 +43,7 @@ jobs:
         git checkout master
         git config --global user.name "Emil Karlsson"
         git config --global user.email "own.emka@gmail.com"
+        git pull
         git add example/windows/
         git commit -m "[🚚 Automatic] Generated Example Executable"
         git push
