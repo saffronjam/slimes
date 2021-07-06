@@ -1,33 +1,6 @@
 ---@diagnostic disable: undefined-global
 
 local ProjectName = "Slimes"
-local OutBinDst = _MAIN_SCRIPT_DIR .. "/Example/%{cfg.system}/"
-
-local function GetBasePath()
-	return debug.getinfo(1).source:match("@?(.*/)")
-end
-
-local function CopyAssetsToOutput(Configuration, BinaryOutputDir, ProjectDir)
-    filter ("configurations:" .. Configuration)
-		if Configuration == "Debug" or Configuration == "Release" then
-			local resFrom = GetBasePath() .. AstFol
-            local resBinTo = BinaryOutputDir .. AstFol
-            local resProjTo = ProjectDir .. AstFol
-            postbuildcommands {
-                CopyCmd(resFrom, resBinTo),
-                CopyCmd(resFrom, resProjTo)
-            }
-		elseif Configuration == "Dist" then
-            local resFrom = GetBasePath() .. AstFol
-            local resBinTo = BinaryOutputDir .. AstFol
-            local resProjTo = ProjectDir .. AstFol
-            postbuildcommands {
-                CopyCmd(resFrom, resBinTo),
-                CopyCmd(resFrom, resProjTo)
-            }
-		end
-end
-
 
 workspace "Saffron"
 	architecture "x64"
@@ -61,17 +34,17 @@ project (ProjectName)
 	    targetdir (OutBin)
         SaffronEngine2D.PreBuild("Debug", OutBin, PrjLoc)
         SaffronEngine2D.PostBuild("Debug", OutBin, PrjLoc)
-        CopyAssetsToOutput("Debug", OutBin, PrjLoc)
+        Utils.CopyAssetsToOutput("Debug", OutBin, PrjLoc)
 
         SaffronEngine2D.PreBuild("Release", OutBin, PrjLoc)
         SaffronEngine2D.PostBuild("Release", OutBin, PrjLoc)
-        CopyAssetsToOutput("Release", OutBin, PrjLoc)
+        Utils.CopyAssetsToOutput("Release", OutBin, PrjLoc)
 
     filter "configurations:Dist"
-        targetdir (OutBinDst)
-        SaffronEngine2D.PreBuild("Dist", OutBinDst, PrjLoc)
-        SaffronEngine2D.PostBuild("Dist", OutBinDst, PrjLoc)
-        CopyAssetsToOutput("Dist", OutBinDst, PrjLoc)
+        targetdir (OutBinDist)
+        SaffronEngine2D.PreBuild("Dist", OutBinDist, PrjLoc)
+        SaffronEngine2D.PostBuild("Dist", OutBinDist, PrjLoc)
+        Utils.CopyAssetsToOutput("Dist", OutBinDist, PrjLoc)
 
     filter "configurations:Debug or Release or Dist"
 
@@ -89,8 +62,6 @@ project (ProjectName)
     SaffronEngine2D.Include()
     SaffronEngine2D.Link()
     SaffronEngine2D.AddDefines()
-
-
 
     filter "configurations:Debug"
         symbols "On"
