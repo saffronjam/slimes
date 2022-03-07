@@ -17,7 +17,7 @@ SimulationManager::SimulationManager(QualityType initialQuality) :
 	_painterPS = ShaderStore::Get("painter.frag", sf::Shader::Type::Fragment);
 
 	// Palette read-textures
-	const String filepaths[] = {"slimeLarge.png", "fieryLarge.png", "greyscaleLarge.png", "rainbowLarge.png", "uvLarge.png"};
+	const std::string filepaths[] = {"slimeLarge.png", "fieryLarge.png", "greyscaleLarge.png", "rainbowLarge.png", "uvLarge.png"};
 
 	for (int i = 0; i < _palettes.size(); i++)
 	{
@@ -214,7 +214,7 @@ void SimulationManager::UpdatePaletteData()
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-Function<sf::Vector2f(int)> SimulationManager::PositionGenerator(ShapeType shapeType)
+std::function<sf::Vector2f(int)> SimulationManager::PositionGenerator(ShapeType shapeType)
 {
 	switch (_shapeType)
 	{
@@ -255,7 +255,7 @@ Function<sf::Vector2f(int)> SimulationManager::PositionGenerator(ShapeType shape
 	}
 }
 
-Function<float(int)> SimulationManager::AngleGenerator(AngleType angleType)
+std::function<float(int)> SimulationManager::AngleGenerator(AngleType angleType)
 {
 	switch (_angleType)
 	{
@@ -285,7 +285,7 @@ Function<float(int)> SimulationManager::AngleGenerator(AngleType angleType)
 	}
 }
 
-void SimulationManager::SetShape(const Function<sf::Vector2f(int)>& generator)
+void SimulationManager::SetShape(const std::function<sf::Vector2f(int)>& generator)
 {
 	for (int i = 0; i < _agentBuffer.size(); i++)
 	{
@@ -293,7 +293,7 @@ void SimulationManager::SetShape(const Function<sf::Vector2f(int)>& generator)
 	}
 }
 
-void SimulationManager::SetAngles(const Function<float(int)>& generator)
+void SimulationManager::SetAngles(const std::function<float(int)>& generator)
 {
 	for (int i = 0; i < _agentBuffer.size(); i++)
 	{
@@ -422,7 +422,7 @@ void SimulationManager::RunDrawFrame()
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 }
 
-void SimulationManager::SetUniform(uint id, const String& name, const sf::Vector2<double>& value)
+void SimulationManager::SetUniform(uint id, const std::string& name, const sf::Vector2<double>& value)
 {
 	glUseProgram(id);
 
@@ -433,7 +433,7 @@ void SimulationManager::SetUniform(uint id, const String& name, const sf::Vector
 	glUseProgram(0);
 }
 
-void SimulationManager::SetUniform(uint id, const String& name, float value)
+void SimulationManager::SetUniform(uint id, const std::string& name, float value)
 {
 	glUseProgram(id);
 
@@ -444,7 +444,7 @@ void SimulationManager::SetUniform(uint id, const String& name, float value)
 	glUseProgram(0);
 }
 
-void SimulationManager::SetUniform(uint id, const String& name, double value)
+void SimulationManager::SetUniform(uint id, const std::string& name, double value)
 {
 	glUseProgram(id);
 
@@ -455,7 +455,7 @@ void SimulationManager::SetUniform(uint id, const String& name, double value)
 	glUseProgram(0);
 }
 
-void SimulationManager::SetUniform(uint id, const String& name, int value)
+void SimulationManager::SetUniform(uint id, const std::string& name, int value)
 {
 	glUseProgram(id);
 
