@@ -2,13 +2,13 @@
 
 namespace Se
 {
-void ProjectLayer::OnAttach(Shared<Batch>& batch)
+void ProjectLayer::OnAttach(std::shared_ptr<Batch>& batch)
 {
 	BaseLayer::OnAttach(batch);
 	batch->Submit([this]
 		{
 		}, "Create Simulation Manager");
-	_simMgr = CreateShared<SimulationManager>();
+	_simMgr = std::make_shared<SimulationManager>();
 }
 
 void ProjectLayer::OnDetach()

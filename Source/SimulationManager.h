@@ -57,11 +57,11 @@ private:
 	void UpdatePaletteTransition();
 	void UpdatePaletteData();
 
-	auto PositionGenerator(ShapeType shapeType) -> Function<sf::Vector2f(int)>;
-	auto AngleGenerator(AngleType angleType) -> Function<float(int)>;
+	auto PositionGenerator(ShapeType shapeType) -> std::function<sf::Vector2f(int)>;
+	auto AngleGenerator(AngleType angleType) -> std::function<float(int)>;
 
-	void SetShape(const Function<sf::Vector2f(int)>& generator);
-	void SetAngles(const Function<float(int)>& generator);
+	void SetShape(const std::function<sf::Vector2f(int)>& generator);
+	void SetAngles(const std::function<float(int)>& generator);
 	void SetPalette(PaletteType desired);
 	void SetQuality(QualityType quality);
 	void ResizeTexture(uint width, uint height);
@@ -73,10 +73,10 @@ private:
 	void RunDrawFrame();
 
 	// Fix for problem with using OpenGL freely alongside SFML
-	static void SetUniform(uint id, const String& name, const sf::Vector2<double>& value);
-	static void SetUniform(uint id, const String& name, float value);
-	static void SetUniform(uint id, const String& name, double value);
-	static void SetUniform(uint id, const String& name, int value);
+	static void SetUniform(uint id, const std::string& name, const sf::Vector2<double>& value);
+	static void SetUniform(uint id, const std::string& name, float value);
+	static void SetUniform(uint id, const std::string& name, double value);
+	static void SetUniform(uint id, const std::string& name, int value);
 
 private:
 	static constexpr uint _paletteWidth = 2048;
@@ -87,28 +87,28 @@ private:
 	uint _texWidth;
 	uint _texHeight;
 
-	List<Agent> _agentBuffer;
+	std::vector<Agent> _agentBuffer;
 
 	sf::Image _simulationImage;
 
 	sf::Texture _dataTexture;
 	sf::RenderTexture _targetTexture;
 
-	Shared<ComputeShader> _drawCS;
-	Shared<sf::Shader> _painterPS;
-	Shared<sf::Shader> _blendEvapPaintPS;
+	std::shared_ptr<ComputeShader> _drawCS;
+	std::shared_ptr<sf::Shader> _painterPS;
+	std::shared_ptr<sf::Shader> _blendEvapPaintPS;
 	uint _ssbo;
 
 	ShapeType _shapeType = ShapeType::Circle;
 	AngleType _angleType = AngleType::CenterIn;
 
-	Array<Shared<sf::Image>, static_cast<size_t>(PaletteType::Count)> _paletteImages;
-	Array<sf::Texture, static_cast<size_t>(PaletteType::Count)> _palettes;
+	std::array<std::shared_ptr<sf::Image>, static_cast<size_t>(PaletteType::Count)> _paletteImages;
+	std::array<sf::Texture, static_cast<size_t>(PaletteType::Count)> _palettes;
 	sf::Image _currentPaletteImage;
 	sf::Texture _currentPaletteTexture;
 	PaletteType _desiredPalette = PaletteType::Slime;
-	Array<sf::Vector4f, _paletteWidth> _colorsStart;
-	Array<sf::Vector4f, _paletteWidth> _colorsCurrent;
+	std::array<sf::Vector4f, _paletteWidth> _colorsStart;
+	std::array<sf::Vector4f, _paletteWidth> _colorsCurrent;
 
 	sf::Time _colorTransitionTimer;
 	sf::Time _colorTransitionDuration = sf::seconds(0.3f);
@@ -121,10 +121,10 @@ private:
 	float _evaporateSpeed = 6.5f;
 	float _colorScale = 5.0f;
 
-	List<const char*> _shapeTypeNames;
-	List<const char*> _angleTypeNames;
-	List<const char*> _paletteTypeNames;
-	List<const char*> _qualityTypeNames;
+	std::vector<const char*> _shapeTypeNames;
+	std::vector<const char*> _angleTypeNames;
+	std::vector<const char*> _paletteTypeNames;
+	std::vector<const char*> _qualityTypeNames;
 	int _shapeTypeIndex = static_cast<int>(_shapeType);
 	int _angleTypeIndex = static_cast<int>(_angleType);
 	int _paletteTypeIndex = static_cast<int>(_desiredPalette);
