@@ -11,10 +11,10 @@
 ## Preview
 
 <p align="center">  
-  <img src="https://github.com/saffronjam/slimes/blob/master/preview0.png" width="75%">
-  <img src="https://github.com/saffronjam/slimes/blob/master/previewGif1.gif" width="75%">
-  <img src="https://github.com/saffronjam/slimes/blob/master/previewGif0.gif" width="75%">
-  <img src="https://github.com/saffronjam/slimes/blob/master/preview1.png" width="75%">
+  <img src="https://github.com/saffronjam/slimes/blob/master/docs/preview0.png" width="75%">
+  <img src="https://github.com/saffronjam/slimes/blob/master/docs/preview_gif_1.gif" width="75%">
+  <img src="https://github.com/saffronjam/slimes/blob/master/docs/preview_gif_0.gif" width="75%">
+  <img src="https://github.com/saffronjam/slimes/blob/master/docs/preview1.png" width="75%">
 </p>
 
 ## Try it out
