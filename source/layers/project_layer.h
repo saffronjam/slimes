@@ -1,11 +1,14 @@
-﻿#pragma once
+#pragma once
 
-#include "Layers/BaseLayer.h"
+#include <memory>
 
-#include "SimulationManager.h"
+#include "layers/base_layer.h"
 
-namespace Se
+#include "simulation_manager.h"
+
+namespace slimes
 {
+using namespace saffron;
 class ProjectLayer : public BaseLayer
 {
 public:

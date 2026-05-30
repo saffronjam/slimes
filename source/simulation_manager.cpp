@@ -1,11 +1,12 @@
-#include "SaffronPCH.h"
+#include "saffron_pch.h"
 
 #include <glad/glad.h>
 
-#include "SimulationManager.h"
+#include "simulation_manager.h"
 
-namespace Se
+namespace slimes
 {
+using namespace saffron;
 SimulationManager::SimulationManager(QualityType initialQuality) :
 	_shapeTypeNames({"Circle", "Square", "Random"}),
 	_angleTypeNames({"Center In", "Center Out", "Random"}),
@@ -19,11 +20,16 @@ SimulationManager::SimulationManager(QualityType initialQuality) :
 	// Palette read-textures
 	const std::string filepaths[] = {"slimeLarge.png", "fieryLarge.png", "greyscaleLarge.png", "rainbowLarge.png", "uvLarge.png"};
 
-	for (int i = 0; i < _palettes.size(); i++)
-	{
-		auto image = ImageStore::Get("Pals/" + filepaths[i]);
-		Debug::Assert(image->getSize().x == _paletteWidth && image->getSize().y == 1);
-		_paletteImages[i] = image;
+		for (int i = 0; i < _palettes.size(); i++)
+		{
+			auto image = ImageStore::Get("pals/" + filepaths[i], false);
+			if (image->getSize().x != _paletteWidth || image->getSize().y != 1)
+			{
+				Log::CoreError("Invalid slime palette dimensions for '{}': expected {}x1, got {}x{}", filepaths[i],
+				              _paletteWidth, image->getSize().x, image->getSize().y);
+				continue;
+			}
+			_paletteImages[i] = image;
 
 		_palettes[i].loadFromImage(*image);
 		const auto size = _palettes[i].getSize();
@@ -73,12 +79,12 @@ void SimulationManager::OnUpdate(Scene& scene)
 			RunDrawFrame();
 		}
 
-		SetUniform(_blendEvapPaintPS->getNativeHandle(), "dt", dt);
-		SetUniform(_blendEvapPaintPS->getNativeHandle(), "diffuseSpeed", _inTransition ? 40.0f : _diffuseSpeed);
-		SetUniform(_blendEvapPaintPS->getNativeHandle(), "evaporateSpeed", _inTransition ? 80.0f : _evaporateSpeed);
-		SetUniform(_blendEvapPaintPS->getNativeHandle(), "blendSize", 3);
-		SetUniform(_blendEvapPaintPS->getNativeHandle(), "maxPixelValue", _colorScale);
-		SetUniform(_blendEvapPaintPS->getNativeHandle(), "paletteWidth", static_cast<int>(_paletteWidth));
+		SetFloatUniform(_blendEvapPaintPS->getNativeHandle(), "dt", dt);
+		SetFloatUniform(_blendEvapPaintPS->getNativeHandle(), "diffuseSpeed", _inTransition ? 40.0f : _diffuseSpeed);
+		SetFloatUniform(_blendEvapPaintPS->getNativeHandle(), "evaporateSpeed", _inTransition ? 80.0f : _evaporateSpeed);
+		SetIntUniform(_blendEvapPaintPS->getNativeHandle(), "blendSize", 3);
+		SetFloatUniform(_blendEvapPaintPS->getNativeHandle(), "maxPixelValue", _colorScale);
+		SetIntUniform(_blendEvapPaintPS->getNativeHandle(), "paletteWidth", static_cast<int>(_paletteWidth));
 
 		sf::RectangleShape simRectShape(sf::Vector2f(_texWidth, _texHeight));
 		simRectShape.setTexture(&_currentPaletteTexture);
@@ -86,8 +92,8 @@ void SimulationManager::OnUpdate(Scene& scene)
 	}
 	else
 	{
-		SetUniform(_painterPS->getNativeHandle(), "maxPixelValue", _colorScale);
-		SetUniform(_painterPS->getNativeHandle(), "paletteWidth", static_cast<int>(_paletteWidth));
+		SetFloatUniform(_painterPS->getNativeHandle(), "maxPixelValue", _colorScale);
+		SetIntUniform(_painterPS->getNativeHandle(), "paletteWidth", static_cast<int>(_paletteWidth));
 
 		sf::RectangleShape simRectShape(sf::Vector2f(_texWidth, _texHeight));
 		simRectShape.setTexture(&_currentPaletteTexture);
@@ -106,7 +112,7 @@ void SimulationManager::OnRender(Scene& scene)
 	sf::Sprite sprite(_targetTexture.getTexture());
 	sprite.setPosition(-size.x / 2.0f, -size.y / 2.0f);
 	sprite.setScale(diff.x, diff.y);
-	scene.Submit(sprite);
+	scene.Submit(sprite, sf::RenderStates::Default);
 }
 
 void SimulationManager::OnGuiRender()
@@ -118,7 +124,7 @@ void SimulationManager::OnGuiRender()
 
 	ImGui::Separator();
 
-	Gui::BeginPropertyGrid("Simulation Manager");
+	Gui::BeginPropertyGrid("Simulation Manager", -1.0f);
 	Gui::Property("Movement Speed", _movementSpeed, 10.0f, 500.0f, 1.0f, GuiPropertyFlag_Slider);
 	Gui::Property("Trail Attraction", _trailAttraction, 10.0f, 500.0f, 1.0f, GuiPropertyFlag_Slider);
 	Gui::Property("Diffuse Speed", _diffuseSpeed, 0.0f, 25.0f, 0.01f, GuiPropertyFlag_Slider);
@@ -128,7 +134,7 @@ void SimulationManager::OnGuiRender()
 
 	ImGui::Separator();
 
-	Gui::BeginPropertyGrid("Reset Patterns");
+	Gui::BeginPropertyGrid("Reset Patterns", -1.0f);
 	ImGui::Text("Reset Shape");
 	ImGui::NextColumn();
 	ImGui::PushItemWidth(-1);
@@ -142,12 +148,12 @@ void SimulationManager::OnGuiRender()
 	Gui::Property("Reset", [this]
 	{
 		Transition(static_cast<ShapeType>(_shapeTypeIndex), static_cast<AngleType>(_angleTypeIndex));
-	});
+	}, false);
 	Gui::EndPropertyGrid();
 
 	ImGui::Separator();
 
-	Gui::BeginPropertyGrid("Quality");
+	Gui::BeginPropertyGrid("Quality", -1.0f);
 	ImGui::Text("Quality");
 	ImGui::NextColumn();
 	ImGui::PushItemWidth(-1);
@@ -162,7 +168,7 @@ void SimulationManager::OnGuiRender()
 
 	ImGui::Separator();
 
-	Gui::BeginPropertyGrid("Palette");
+	Gui::BeginPropertyGrid("Palette", -1.0f);
 	ImGui::Text("Palette");
 	ImGui::NextColumn();
 	ImGui::PushItemWidth(-1);
@@ -173,7 +179,7 @@ void SimulationManager::OnGuiRender()
 	ImGui::NextColumn();
 	Gui::EndPropertyGrid();
 	ImGui::Dummy({1.0f, 2.0f});
-	Gui::Image(_currentPaletteTexture, sf::Vector2f(ImGui::GetContentRegionAvailWidth(), 9.0f));
+	Gui::Image(_currentPaletteTexture, sf::Vector2f(ImGui::GetContentRegionAvailWidth(), 9.0f), sf::Color::White, sf::Color::Transparent);
 }
 
 void SimulationManager::UpdatePaletteTransition()
@@ -225,7 +231,7 @@ std::function<sf::Vector2f(int)> SimulationManager::PositionGenerator(ShapeType 
 			const float relative = static_cast<float>(index) / static_cast<float>(_agentBuffer.size()) * 2.0f *
 				Math::PI;
 
-			const float multiplier = Random::Real() * (_texHeight / 3.0f - 50.0f);
+			const float multiplier = Random::Real<float>(0.0f, 1.0f) * (_texHeight / 3.0f - 50.0f);
 			const auto offset = sf::Vector2f(_texWidth, _texHeight) / 2.0f;
 			return sf::Vector2f(std::cos(relative), std::sin(relative)) * multiplier + offset;
 		};
@@ -247,17 +253,17 @@ std::function<sf::Vector2f(int)> SimulationManager::PositionGenerator(ShapeType 
 			return Random::Vec2(VecUtils::Null<>(), sf::Vector2f(_texWidth, _texHeight));
 		};
 	}
-	default:
-	{
-		Debug::Break("Invalid Shape Type");
-		return {};
-	}
+		default:
+		{
+			Log::CoreError("Invalid Shape Type");
+			return {};
+		}
 	}
 }
 
 std::function<float(int)> SimulationManager::AngleGenerator(AngleType angleType)
 {
-	switch (_angleType)
+		switch (angleType)
 	{
 	case AngleType::CenterIn:
 	{
@@ -277,11 +283,12 @@ std::function<float(int)> SimulationManager::AngleGenerator(AngleType angleType)
 	{
 		return [this](int index)
 		{
-			return Random::Real() * 2.0f * Math::PI;
+			return Random::Real<float>(0.0f, 1.0f) * 2.0f * Math::PI;
 		};
 	}
-	default: Debug::Break("Invalid Angle Type");
-		return {};
+	default:
+		Log::CoreError("Invalid Angle Type");
+			return {};
 	}
 }
 
@@ -330,10 +337,11 @@ void SimulationManager::SetQuality(QualityType quality)
 		ResizeAgentDimension(1024);
 		break;
 	}
-	default:
-	{
-		Debug::Break("Invalid Quality Type");
-	}
+		default:
+		{
+			Log::CoreError("Invalid Quality Type");
+			return;
+		}
 	}
 	Transition(_shapeType, _angleType);
 }
@@ -422,46 +430,66 @@ void SimulationManager::RunDrawFrame()
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 }
 
-void SimulationManager::SetUniform(uint id, const std::string& name, const sf::Vector2<double>& value)
+void SimulationManager::SetVec2Uniform(uint id, const std::string& name, const sf::Vector2<double>& value)
 {
 	glUseProgram(id);
 
-	const auto loc = glGetUniformLocation(id, name.c_str());
-	Debug::Assert(loc != -1);
-	glUniform2d(loc, value.x, value.y);
+		const auto loc = glGetUniformLocation(id, name.c_str());
+		if (loc == -1)
+		{
+			Log::CoreError("Shader uniform '{}' was not found", name);
+			glUseProgram(0);
+			return;
+		}
+		glUniform2d(loc, value.x, value.y);
 
 	glUseProgram(0);
 }
 
-void SimulationManager::SetUniform(uint id, const std::string& name, float value)
+void SimulationManager::SetFloatUniform(uint id, const std::string& name, float value)
 {
 	glUseProgram(id);
 
-	const auto loc = glGetUniformLocation(id, name.c_str());
-	Debug::Assert(loc != -1);
-	glUniform1f(loc, value);
+		const auto loc = glGetUniformLocation(id, name.c_str());
+		if (loc == -1)
+		{
+			Log::CoreError("Shader uniform '{}' was not found", name);
+			glUseProgram(0);
+			return;
+		}
+		glUniform1f(loc, value);
 
 	glUseProgram(0);
 }
 
-void SimulationManager::SetUniform(uint id, const std::string& name, double value)
+void SimulationManager::SetDoubleUniform(uint id, const std::string& name, double value)
 {
 	glUseProgram(id);
 
-	const auto loc = glGetUniformLocation(id, name.c_str());
-	Debug::Assert(loc != -1);
-	glUniform1d(loc, value);
+		const auto loc = glGetUniformLocation(id, name.c_str());
+		if (loc == -1)
+		{
+			Log::CoreError("Shader uniform '{}' was not found", name);
+			glUseProgram(0);
+			return;
+		}
+		glUniform1d(loc, value);
 
 	glUseProgram(0);
 }
 
-void SimulationManager::SetUniform(uint id, const std::string& name, int value)
+void SimulationManager::SetIntUniform(uint id, const std::string& name, int value)
 {
 	glUseProgram(id);
 
-	const auto loc = glGetUniformLocation(id, name.c_str());
-	Debug::Assert(loc != -1);
-	glUniform1i(loc, value);
+		const auto loc = glGetUniformLocation(id, name.c_str());
+		if (loc == -1)
+		{
+			Log::CoreError("Shader uniform '{}' was not found", name);
+			glUseProgram(0);
+			return;
+		}
+		glUniform1i(loc, value);
 
 	glUseProgram(0);
 }

@@ -1,11 +1,14 @@
 #pragma once
 
-#include <Saffron.h>
+#include <memory>
 
-#include "Layers/ProjectLayer.h"
+#include <saffron.h>
 
-namespace Se
+#include "layers/project_layer.h"
+
+namespace slimes
 {
+using namespace saffron;
 class ProjectApp : public App
 {
 public:

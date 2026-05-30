@@ -1,7 +1,7 @@
 # Slimes
 
 <p align="center">
-  <img src="https://github.com/saffronjam/Slimes/workflows/Build-Windows/badge.svg" alt="build">
+  <img src="https://github.com/saffronjam/slimes/actions/workflows/ci.yml/badge.svg" alt="build">
   <img src="https://img.shields.io/badge/language-C++-blue.svg" alt="language">
   <img src="https://img.shields.io/badge/std-C++20-blue.svg" alt="c++std">
   <img src="https://img.shields.io/badge/mvsc-2019+-ff69b4.svg" alt="msvc2017+">
@@ -11,20 +11,18 @@
 ## Preview
 
 <p align="center">  
-  <img src="https://github.com/saffronjam/Slimes/blob/master/preview0.png" width="75%">
-  <img src="https://github.com/saffronjam/Slimes/blob/master/previewGif1.gif" width="75%">
-  <img src="https://github.com/saffronjam/Slimes/blob/master/previewGif0.gif" width="75%">
-  <img src="https://github.com/saffronjam/Slimes/blob/master/preview1.png" width="75%">
+  <img src="https://github.com/saffronjam/slimes/blob/master/preview0.png" width="75%">
+  <img src="https://github.com/saffronjam/slimes/blob/master/previewGif1.gif" width="75%">
+  <img src="https://github.com/saffronjam/slimes/blob/master/previewGif0.gif" width="75%">
+  <img src="https://github.com/saffronjam/slimes/blob/master/preview1.png" width="75%">
 </p>
 
-## Try it out - No building needed
-Run the executable under `Example/<Platform>/`
+## Try it out
+Download prebuilt binaries from GitHub Releases.
   
 ## Build yourself
 
-Clone using `git clone --recurse-submodules --remote -j8 git://github.com/saffronjam/Slimes`
-
 ### Windows
-Run `Scripts/GenerateProject.bat`
+Run `scripts/GenerateProject.bat`
 
-Open `Saffron.sln` and build with `Dist`
+Open `saffron.sln` and build with `Release`

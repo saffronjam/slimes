@@ -1,15 +1,18 @@
-﻿#pragma once
+#pragma once
 
-#include <Saffron.h>
+#include <memory>
 
-namespace Se
+#include <saffron.h>
+
+namespace slimes
 {
-class BaseLayer : public Layer
+using namespace saffron;
+class BaseLayer : public LayerImpl
 {
 public:
 	BaseLayer();
 
-	void OnAttach(std::shared_ptr<Batch>& batch) override;
+	void OnAttach(std::shared_ptr<Batch> &loader) override;
 	void OnDetach() override;
 
 	void OnPreFrame() override;

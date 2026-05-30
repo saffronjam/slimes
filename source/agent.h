@@ -1,9 +1,10 @@
 #pragma once
 
-#include <Saffron.h>
+#include <saffron.h>
 
-namespace Se
+namespace slimes
 {
+using namespace saffron;
 struct alignas(16) Agent
 {
 	sf::Vector2f Position;

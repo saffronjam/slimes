@@ -1,23 +1,26 @@
-﻿#include "Layers/BaseLayer.h"
+#include <memory>
+#include "layers/base_layer.h"
 
-namespace Se
+namespace slimes
 {
+using namespace saffron;
 BaseLayer::BaseLayer() :
-	_controllableRenderTexture(100, 100),
+	LayerImpl("BaseLayer"),
+	_controllableRenderTexture(100, 100, sf::ContextSettings()),
 	_scene("Scene", &_controllableRenderTexture, &_camera)
 {
 }
 
-void BaseLayer::OnAttach(std::shared_ptr<Batch>& batch)
+void BaseLayer::OnAttach(std::shared_ptr<Batch>& loader)
 {
-	_scene.ViewportPane().Resized += SE_EV_ACTION(BaseLayer::OnWantRenderTargetResize);
+	_scene.ViewportPane().Resized.Subscribe(SE_EV_ACTION(BaseLayer::OnWantRenderTargetResize));
 	RenderTargetManager::Add(&_controllableRenderTexture);
 
-	RenderTargetResized += [this](const sf::Vector2f& newSize)
+	RenderTargetResized.Subscribe([this](const sf::Vector2f& newSize)
 	{
 		OnRenderTargetResize(newSize);
 		return false;
-	};
+	});
 }
 
 void BaseLayer::OnDetach()
@@ -63,7 +66,13 @@ void BaseLayer::OnGuiRender()
 
 void BaseLayer::OnRenderTargetResize(const sf::Vector2f& newSize)
 {
-	_controllableRenderTexture.RenderTexture().create(newSize.x, newSize.y);
+	const auto result = _controllableRenderTexture.TryCreate(newSize.x, newSize.y, sf::ContextSettings());
+	if (!result)
+	{
+		Log::CoreError(result.error().message);
+		return;
+	}
+
 	_camera.SetViewportSize(newSize);
 }
 

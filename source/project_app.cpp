@@ -1,13 +1,18 @@
+#include <memory>
 #define SAFFRON_ENTRY_POINT
-#include "ProjectApp.h"
+#include "project_app.h"
 
-namespace Se
+namespace saffron
 {
 auto CreateApplication() -> std::unique_ptr<App>
 {
-	return std::make_unique<ProjectApp>(AppProperties::CreateFullscreen("Slimes"));
+	return std::make_unique<slimes::ProjectApp>(AppProperties::CreateFullscreen("slimes"));
+}
 }
 
+namespace slimes
+{
+using namespace saffron;
 ProjectApp::ProjectApp(const AppProperties& properties) :
 	App(properties),
 	_projectLayer(std::make_shared<ProjectLayer>())

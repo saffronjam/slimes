@@ -1,14 +1,18 @@
 #pragma once
 
+#include <memory>
+
 #include <SFML/Graphics.hpp>
-#include <Saffron.h>
+#include <saffron.h>
 
-#include "Agent.h"
+#include "agent.h"
 
-namespace Se
+namespace slimes
 {
+using namespace saffron;
 class SimulationManager
 {
+public:
 	enum class ShapeType
 	{
 		Circle,
@@ -46,8 +50,7 @@ class SimulationManager
 		Running
 	};
 
-public:
-	explicit SimulationManager(QualityType initialQuality = QualityType::Medium);
+	explicit SimulationManager(QualityType initialQuality);
 
 	void OnUpdate(Scene& scene);
 	void OnRender(Scene& scene);
@@ -73,10 +76,10 @@ private:
 	void RunDrawFrame();
 
 	// Fix for problem with using OpenGL freely alongside SFML
-	static void SetUniform(uint id, const std::string& name, const sf::Vector2<double>& value);
-	static void SetUniform(uint id, const std::string& name, float value);
-	static void SetUniform(uint id, const std::string& name, double value);
-	static void SetUniform(uint id, const std::string& name, int value);
+	static void SetVec2Uniform(uint id, const std::string& name, const sf::Vector2<double>& value);
+	static void SetFloatUniform(uint id, const std::string& name, float value);
+	static void SetDoubleUniform(uint id, const std::string& name, double value);
+	static void SetIntUniform(uint id, const std::string& name, int value);
 
 private:
 	static constexpr uint _paletteWidth = 2048;
